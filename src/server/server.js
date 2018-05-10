@@ -6,11 +6,15 @@ import send from 'koa-send';
 import cors from 'kcors';
 
 import place from './controllers/place';
+import observation from './controllers/observation';
 
 const app = new Koa();
 let http = null;
 
-app.use(logger());
+// Disable logger for testing so the output is cleaner
+if (process.env.NODE_ENV !== 'test') {
+	app.use(logger());
+}
 
 app.use(cors({credentials: true}));
 app.use(bodyParser());
@@ -26,6 +30,10 @@ router.get('/', async ctx => {
 router.post('/places/new', place.create);
 router.get('/places', place.query);
 router.get('/places/:id', place.query);
+
+router.post('/observations/new', observation.create);
+router.get('/observations', observation.query);
+router.get('/observations/:place', observation.query);
 
 app
 	.use(router.routes())

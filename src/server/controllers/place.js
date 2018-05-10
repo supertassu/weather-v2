@@ -53,7 +53,7 @@ const create = async ctx => {
 				http: '400 Bad Request'
 			};
 			ctx.status = 400;
-		} else if (e.message.indexOf('Validation error') !== -1) { // eslint-disable-line no-negated-condition
+		} else if (e.message.indexOf('Validation error') !== -1 || e.message.indexOf('notNull Violation') !== -1) {
 			ctx.body = {
 				error: 'CLIENT_ERROR',
 				code: 'ERR_PLACE_CREATE_VALIDATION_OTHER',
@@ -73,7 +73,7 @@ const create = async ctx => {
 		return;
 	}
 
-	ctx.body = await result.toJSON();
+	ctx.body = result.toJSON();
 	ctx.status = 201;
 };
 

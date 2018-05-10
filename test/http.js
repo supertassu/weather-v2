@@ -44,6 +44,50 @@ test('creating place', async t => {
 	t.is(res.body.code, 'ERR_PLACE_CREATE_ONLY_ONE_LAT_LON_PRESENT');
 });
 
+test('creating observation', async t => {
+	// Creating observation place for testing
+
+	let res = await request(server.http())
+		.post('/places/new')
+		.send({name: 'observation testing'});
+
+	t.is(res.status, 201);
+	t.is(res.body.name, 'observation testing');
+	t.is(res.body.latitude, null);
+	t.is(res.body.longitude, null);
+
+	const placeId = res.body.id;
+
+	res = await request(server.http())
+		.post('/observations/new')
+		.send({});
+
+	t.deepEqual(res.body, {
+		error: 'CLIENT_ERROR',
+		code: 'ERR_OBSERVATION_CREATE_VALIDATION',
+		userFriendlyMessages: ['notNull Violation: observation.temperature cannot be null,', 'notNull Violation: observation.place cannot be null'],
+		http: '400 Bad Request'
+	});
+
+	res = await request(server.http())
+		.post('/observations/new')
+		.send({place: 25000, temperature: 25});
+
+	t.deepEqual(res.body, {
+		error: 'CLIENT_ERROR',
+		code: 'ERR_OBSERVATION_CREATE_VALIDATION',
+		userFriendlyMessages: ['Validation error: could not find a place with specified id'],
+		http: '400 Bad Request'
+	});
+
+	res = await request(server.http())
+		.post('/observations/new')
+		.send({place: placeId, temperature: 25});
+
+	t.is(res.status, 201);
+	t.is(res.body.temperature, 25);
+});
+
 test
 	.after
 	.always('server stops', async t => {
