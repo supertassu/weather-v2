@@ -9,6 +9,16 @@ import sequelize from './../src/server/sequelize';
 test.before('sequelize synchronizes', async t => {
 	await sequelize.sync();
 
+	observation.destroy({
+		where: {},
+		truncate: true
+	});
+
+	place.destroy({
+		where: {},
+		truncate: true
+	});
+
 	t.context = {
 		place: await place.create({name: 'this place was created in the setup function so you can use it if you want.'})
 	};

@@ -5,6 +5,8 @@ import Router from 'koa-router';
 import send from 'koa-send';
 import cors from 'kcors';
 
+import place from './controllers/place';
+
 const app = new Koa();
 let http = null;
 
@@ -21,7 +23,12 @@ router.get('/', async ctx => {
 	await send(ctx, './dist/bundle.js');
 });
 
-app.use(router.routes())
+router.post('/places/new', place.create);
+router.get('/places', place.query);
+router.get('/places/:id', place.query);
+
+app
+	.use(router.routes())
 	.use(router.allowedMethods());
 
 function listen(port) {
@@ -37,8 +44,8 @@ function stop() {
 		throw new Error('not yet listening');
 	}
 
-	http.close();
-	http = null;
+    http.close();
+    http = null;
 }
 
 export default {
