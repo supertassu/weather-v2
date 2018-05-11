@@ -1,5 +1,6 @@
 import React from 'react';
 import {get} from 'axios/index';
+import PlaceData from './placedata';
 
 export default class App extends React.Component {
 	constructor() {
@@ -15,9 +16,7 @@ export default class App extends React.Component {
 		const placesData = await get('/places');
 
 		if (placesData.status !== 200) {
-			this.setState({
-				error: `${placesData.status} - ${placesData.statusText}`
-			});
+			this.setState({error: `${placesData.status} - ${placesData.statusText}`});
 
 			console.error('error: ', placesData);
 			return;
@@ -32,6 +31,10 @@ export default class App extends React.Component {
 
 			places[placesData.data.results[key].id] = placesData.data.results[key].name;
 		}
+
+		this.setState({
+			data: places
+		});
 	}
 
 	render() {
@@ -48,6 +51,27 @@ export default class App extends React.Component {
 			return <h1>Hello world!</h1>;
 		}
 
-		return <h1>Loaded.</h1>;
+		console.log(this.state);
+
+		const listItems = [];
+
+		for (const key in this.state.data) {
+			if (!Object.prototype.hasOwnProperty.call(this.state.data, key)) {
+				continue;
+			}
+
+			const place = this.state.data[key];
+
+			console.log('place id', key, place);
+
+			listItems.push(<PlaceData ref={`container-${key}`} key={`${key}-data`} name={place} id={key}/>);
+		}
+
+		return (
+			<div>
+				<h1>Weather Application</h1>
+				<div>{listItems}</div>
+			</div>
+		);
 	}
 }
