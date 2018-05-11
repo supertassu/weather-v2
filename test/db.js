@@ -81,72 +81,70 @@ test('creating a place with only latitude or longitude fails', async t => {
 
 test('creating an observation with weird values should fail', async t => {
 	await t.throws(async () => {
-		const it = await observation.create({place: t.context.place.id, temperature: -123});
-		console.log('1 passed', it);
+		await observation.create();
+	}, {
+		instanceOf: ValidationError,
+		message: 'notNull Violation: observation.temperature cannot be null,\nnotNull Violation: observation.place cannot be null'
+	});
+
+	await t.throws(async () => {
+		await observation.create({place: t.context.place.id, temperature: -123});
 	}, {
 		instanceOf: ValidationError,
 		message: 'Validation error: Validation min on temperature failed'
 	});
 
 	await t.throws(async () => {
-		const it = await observation.create({place: t.context.place.id, temperature: 123});
-		console.log('2 passed', it);
+		await observation.create({place: t.context.place.id, temperature: 123});
 	}, {
 		instanceOf: ValidationError,
 		message: 'Validation error: Validation max on temperature failed'
 	});
 
 	await t.throws(async () => {
-		const it = await observation.create({place: t.context.place.id, temperature: '32 and half degrees'});
-		console.log('3 passed', it);
+		await observation.create({place: t.context.place.id, temperature: '32 and half degrees'});
 	}, {
 		instanceOf: ValidationError,
 		message: 'Validation error: Numbers only please,\nValidation error: Validation isDecimal on temperature failed'
 	});
 
 	await t.throws(async () => {
-		const it = await observation.create({place: t.context.place.id, temperature: '32.5'});
-		console.log('4 passed', it);
+		await observation.create({place: t.context.place.id, temperature: '32.5'});
 	}, {
 		instanceOf: ValidationError,
 		message: 'Validation error: Numbers only please'
 	});
 
 	await t.throws(async () => {
-		const it = await observation.create({place: t.context.place.id});
-		console.log('5 passed', it);
+		await observation.create({place: t.context.place.id});
 	}, {
 		instanceOf: ValidationError,
 		message: 'notNull Violation: observation.temperature cannot be null'
 	});
 
 	await t.throws(async () => {
-		const it = await observation.create({temperature: 37.5});
-		console.log('6 passed', it);
+		await observation.create({temperature: 37.5});
 	}, {
 		instanceOf: ValidationError,
 		message: 'notNull Violation: observation.place cannot be null'
 	});
 
 	await t.throws(async () => {
-		const it = await observation.create({place: 'random place', temperature: 37.5});
-		console.log('7 passed', it);
+		await observation.create({place: 'random place', temperature: 37.5});
 	}, {
 		instanceOf: ValidationError,
 		message: 'Validation error: Validation isInt on place failed'
 	});
 
 	await t.throws(async () => {
-		const it = await observation.create({place: -1, temperature: 37.5});
-		console.log('8 passed', it);
+		await observation.create({place: -1, temperature: 37.5});
 	}, {
 		instanceOf: ForeignKeyConstraintError,
 		message: 'SQLITE_CONSTRAINT: FOREIGN KEY constraint failed'
 	});
 
 	await t.throws(async () => {
-		const it = await observation.create({place: 10000, temperature: 37.5});
-		console.log('9 passed: ', JSON.stringify(it));
+		await observation.create({place: 10000, temperature: 37.5});
 	}, {
 		instanceOf: ForeignKeyConstraintError,
 		message: 'SQLITE_CONSTRAINT: FOREIGN KEY constraint failed'

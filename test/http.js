@@ -105,6 +105,19 @@ test('creating observation validation pass', async t => {
 	t.is(res.body.temperature, 25);
 });
 
+test('creating observation with an invalid place message translation test', async t => {
+	const res = await request(server.http())
+		.post('/observations/new')
+		.send({place: 99999, temperature: 0});
+
+		t.deepEqual(res.body, {
+			error: 'CLIENT_ERROR',
+			code: 'ERR_OBSERVATION_CREATE_VALIDATION',
+			userFriendlyMessages: ['Validation error: could not find a place with specified id'],
+			http: '400 Bad Request'
+		});
+});
+
 test
 	.after
 	.always('server stops', async t => {
