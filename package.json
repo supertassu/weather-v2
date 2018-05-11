@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "rm db/test.sqlite ; xo && NODE_ENV=test ava",
-    "dev": "concurrently --names \"main,webpack,ava,xo\" \"babel-node index.js\" \"webpack --mode=\"development\" --watch\" \"ava --verbose\" \"onchange '*.js' -i -- xo\"",
+    "dev": "concurrently --names \"main,webpack,ava,xo\" \"babel-node index.js\" \"webpack --mode=\"development\" --watch\" \"ava -v --watch\" \"onchange '*.js' -i -- xo\"",
     "build": "webpack --mode=\"production\"",
     "start": "babel-node index.js"
   },
@@ -14,6 +14,7 @@
   "license": "MIT",
   "devDependencies": {
     "ava": "^1.0.0-beta.3",
+    "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",

@@ -6,13 +6,13 @@ import server from './../src/server/server';
 
 test.before('server starts', async t => {
 	t.is(server.http(), null);
-	await server.listen(9000);
+	await server.listen(7867);
 	t.not(server.http(), null);
 });
 
 test('server should not start when it\'s running', t => {
 	t.not(server.http(), null);
-	t.throws(() => server.listen(9000), Error);
+	t.throws(() => server.listen(7867), Error);
 });
 
 test('router should not be empty', t => {
