@@ -33,6 +33,7 @@ router.get('/places/:id', place.query);
 
 router.post('/observations/new', observation.create);
 router.get('/observations', observation.query);
+router.get('/observations/latest/:place', observation.latest);
 router.get('/observations/:place', observation.query);
 
 app

@@ -12,10 +12,10 @@ const query = async ctx => {
 	}
 
 	const result = await observation.findAll(options);
-	const places = await Promise.all(result.map(result => result.toJSON()));
+	const results = await Promise.all(result.map(result => result.toJSON()));
 
 	const response = {
-		results: places
+		results
 	};
 
 	ctx.body = response;
@@ -76,7 +76,38 @@ const create = async ctx => {
 	ctx.status = 201;
 };
 
+const latest = async ctx => {
+	let options = {};
+
+	if (Object.prototype.hasOwnProperty.call(ctx, 'params') && Object.prototype.hasOwnProperty.call(ctx.params, 'place')) {
+		options = {
+			where: {
+				place: ctx.params.place
+			},
+			order: [['createdAt', 'DESC']]
+		};
+	} else {
+		ctx.body = {
+			error: 'CLIENT_ERROR',
+			code: 'ERR_OBSERVATION_LATEST_NO_PLACE_FOUND',
+			userFriendlyMessage: 'it\'s used like: GET /observations/latest/:place',
+			http: '400 Bad Request'
+		};
+		ctx.status = 400;
+		return;
+	}
+
+	const result = await observation.findOne(options);
+
+	const response = {
+		result: await (result ? result.toJSON() : 'none')
+	};
+
+	ctx.body = response;
+};
+
 export default {
 	query,
-	create
+	create,
+	latest
 };
