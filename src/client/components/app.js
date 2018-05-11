@@ -40,8 +40,6 @@ export default class App extends React.Component {
 					return;
 				}
 
-				console.log('loaded: ', placeData);
-
 				if (placeData.data.result === 'none') {
 					return;
 				}
@@ -49,8 +47,8 @@ export default class App extends React.Component {
 				const map = {};
 				map[placesData.data.results[key].id] = [placeData.data.result.temperature, placeData.data.result.createdAt];
 
-				this.setState({
-					placeData: map
+				this.setState(old => {
+					return {placeData: Object.assign(map, old.placeData)};
 				});
 			});
 		}

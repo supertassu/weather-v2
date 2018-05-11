@@ -18,7 +18,6 @@ export default class PlaceData extends React.Component {
 					<legend>{this.props.name} (id: {this.props.id})</legend>
 					<p>Temperature: {this.props.temperature} (observed at {formatDate(this.props.lastObserved)})</p>
 				</fieldset>
-
 			</div>
 		);
 	}
