@@ -8,7 +8,12 @@ const observation = sequelize.define('observation', {
 		validate: {
 			min: -50,
 			max: 55,
-			isDecimal: true
+			isDecimal: true,
+			isNumber(value) {
+				if (JSON.stringify(value).indexOf('"') !== -1) {
+					throw new TypeError('Numbers only please');
+				}
+			}
 		},
 		allowNull: false
 	},

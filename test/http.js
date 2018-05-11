@@ -1,13 +1,20 @@
-import 'babel-polyfill';
+import '@babel/polyfill';
 
 import test from 'ava';
 import request from 'supertest';
 import server from './../src/server/server';
+import place from './../src/server/models/place';
+import sequelize from './../src/server/sequelize';
 
 test.before('server starts', async t => {
+	await sequelize.sync(); // Just in case
 	t.is(server.http(), null);
 	await server.listen(7867);
 	t.not(server.http(), null);
+
+	t.context = {
+		place: await place.create({name: 'observation testing'})
+	};
 });
 
 test('server should not start when it\'s running', t => {
@@ -19,7 +26,7 @@ test('router should not be empty', t => {
 	t.not(server.router().routes().length, 0);
 });
 
-test('creating place', async t => {
+test('creating place dupe test', async t => {
 	let res = await request(server.http())
 		.post('/places/new')
 		.send({name: 'this is a weird name'});
@@ -35,8 +42,10 @@ test('creating place', async t => {
 
 	t.is(res.status, 409);
 	t.is(res.body.code, 'ERR_PLACE_CREATE_CONFLICT_NAME');
+});
 
-	res = await request(server.http())
+test('creating valid place', async t => {
+	const res = await request(server.http())
 		.post('/places/new')
 		.send({name: 'this name should not exist before', latitude: 25});
 
@@ -44,21 +53,10 @@ test('creating place', async t => {
 	t.is(res.body.code, 'ERR_PLACE_CREATE_ONLY_ONE_LAT_LON_PRESENT');
 });
 
-test('creating observation', async t => {
-	// Creating observation place for testing
+test('creating observation validation faiture tests', async t => {
+	const placeId = t.context.place.id;
 
 	let res = await request(server.http())
-		.post('/places/new')
-		.send({name: 'observation testing'});
-
-	t.is(res.status, 201);
-	t.is(res.body.name, 'observation testing');
-	t.is(res.body.latitude, null);
-	t.is(res.body.longitude, null);
-
-	const placeId = res.body.id;
-
-	res = await request(server.http())
 		.post('/observations/new')
 		.send({});
 
@@ -82,7 +80,26 @@ test('creating observation', async t => {
 
 	res = await request(server.http())
 		.post('/observations/new')
+		.send({place: placeId, temperature: 250});
+
+	t.deepEqual(res.body, {
+		error: 'CLIENT_ERROR',
+		code: 'ERR_OBSERVATION_CREATE_VALIDATION',
+		userFriendlyMessages: ['Validation error: Validation max on temperature failed'],
+		http: '400 Bad Request'
+	});
+});
+
+test('creating observation validation pass', async t => {
+	const placeId = t.context.place.id;
+
+	const res = await request(server.http())
+		.post('/observations/new')
 		.send({place: placeId, temperature: 25});
+
+	if (res.status !== 201) {
+		console.log('faiture', res);
+	}
 
 	t.is(res.status, 201);
 	t.is(res.body.temperature, 25);

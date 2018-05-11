@@ -69,7 +69,7 @@ export default class App extends React.Component {
 		}
 
 		if (!this.state.places) {
-			return <h1>Hello world!</h1>;
+			return <h1>Loading!</h1>;
 		}
 
 		const listItems = [];

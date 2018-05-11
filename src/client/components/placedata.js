@@ -31,6 +31,6 @@ PlaceData.propTypes = {
 };
 
 PlaceData.defaultProps = {
-	temperature: -999,
+	temperature: '-999',
 	lastObserved: null
 };

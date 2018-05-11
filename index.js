@@ -1,4 +1,4 @@
-import 'babel-polyfill';
+import '@babel/polyfill';
 
 import server from './src/server/server';
 import db from './src/server/sequelize';

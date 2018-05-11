@@ -1,4 +1,4 @@
-import 'babel-polyfill';
+import '@babel/polyfill';
 
 import test from 'ava';
 import {ValidationError, ForeignKeyConstraintError} from 'sequelize';
@@ -81,56 +81,72 @@ test('creating a place with only latitude or longitude fails', async t => {
 
 test('creating an observation with weird values should fail', async t => {
 	await t.throws(async () => {
-		await observation.create({place: t.context.place.id, temperature: -123});
+		const it = await observation.create({place: t.context.place.id, temperature: -123});
+		console.log('1 passed', it);
 	}, {
 		instanceOf: ValidationError,
 		message: 'Validation error: Validation min on temperature failed'
 	});
 
 	await t.throws(async () => {
-		await observation.create({place: t.context.place.id, temperature: 123});
+		const it = await observation.create({place: t.context.place.id, temperature: 123});
+		console.log('2 passed', it);
 	}, {
 		instanceOf: ValidationError,
 		message: 'Validation error: Validation max on temperature failed'
 	});
 
 	await t.throws(async () => {
-		await observation.create({place: t.context.place.id, temperature: '32 and half degrees'});
+		const it = await observation.create({place: t.context.place.id, temperature: '32 and half degrees'});
+		console.log('3 passed', it);
 	}, {
 		instanceOf: ValidationError,
-		message: 'Validation error: Validation isDecimal on temperature failed'
+		message: 'Validation error: Numbers only please,\nValidation error: Validation isDecimal on temperature failed'
 	});
 
 	await t.throws(async () => {
-		await observation.create({place: t.context.place.id});
+		const it = await observation.create({place: t.context.place.id, temperature: '32.5'});
+		console.log('4 passed', it);
+	}, {
+		instanceOf: ValidationError,
+		message: 'Validation error: Numbers only please'
+	});
+
+	await t.throws(async () => {
+		const it = await observation.create({place: t.context.place.id});
+		console.log('5 passed', it);
 	}, {
 		instanceOf: ValidationError,
 		message: 'notNull Violation: observation.temperature cannot be null'
 	});
 
 	await t.throws(async () => {
-		await observation.create({temperature: 37.5});
+		const it = await observation.create({temperature: 37.5});
+		console.log('6 passed', it);
 	}, {
 		instanceOf: ValidationError,
 		message: 'notNull Violation: observation.place cannot be null'
 	});
 
 	await t.throws(async () => {
-		await observation.create({place: 'random place', temperature: 37.5});
+		const it = await observation.create({place: 'random place', temperature: 37.5});
+		console.log('7 passed', it);
 	}, {
 		instanceOf: ValidationError,
 		message: 'Validation error: Validation isInt on place failed'
 	});
 
 	await t.throws(async () => {
-		await observation.create({place: -1, temperature: 37.5});
+		const it = await observation.create({place: -1, temperature: 37.5});
+		console.log('8 passed', it);
 	}, {
 		instanceOf: ForeignKeyConstraintError,
 		message: 'SQLITE_CONSTRAINT: FOREIGN KEY constraint failed'
 	});
 
 	await t.throws(async () => {
-		await observation.create({place: 10000, temperature: 37.5});
+		const it = await observation.create({place: 10000, temperature: 37.5});
+		console.log('9 passed: ', JSON.stringify(it));
 	}, {
 		instanceOf: ForeignKeyConstraintError,
 		message: 'SQLITE_CONSTRAINT: FOREIGN KEY constraint failed'
@@ -138,9 +154,22 @@ test('creating an observation with weird values should fail', async t => {
 });
 
 test('creating a valid observation passes', async t => {
-	const it = await observation.create({place: t.context.place.id, temperature: 15});
+	let it = await observation.create({place: t.context.place.id, temperature: 15});
+	const oldId = it.id;
 	t.true(it.id > 0);
 	t.is(it.temperature, 15);
+	t.is(it.place, t.context.place.id);
+
+	it = await observation.create({place: t.context.place.id, temperature: 23.5});
+	t.true(it.id > 0);
+	t.true(it.id > oldId);
+	t.is(it.temperature, 23.5);
+	t.is(it.place, t.context.place.id);
+
+	it = await observation.create({place: t.context.place.id, temperature: -12.3});
+	t.true(it.id > 0);
+	t.true(it.id > oldId);
+	t.is(it.temperature, -12.3);
 	t.is(it.place, t.context.place.id);
 });
 
