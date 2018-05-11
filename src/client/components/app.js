@@ -7,8 +7,9 @@ export default class App extends React.Component {
 		super();
 
 		this.state = {
-			data: null,
-			error: null
+			places: null,
+			error: null,
+			placeData: {}
 		};
 	}
 
@@ -30,10 +31,32 @@ export default class App extends React.Component {
 			}
 
 			places[placesData.data.results[key].id] = placesData.data.results[key].name;
+
+			get(`/observations/latest/${placesData.data.results[key].id}`).then(placeData => {
+				if (placeData.status !== 200) {
+					this.setState({error: `${placeData.status} - ${placeData.statusText}`});
+
+					console.error('error: ', placeData);
+					return;
+				}
+
+				console.log('loaded: ', placeData);
+
+				if (placeData.data.result === 'none') {
+					return;
+				}
+
+				const map = {};
+				map[placesData.data.results[key].id] = [placeData.data.result.temperature, placeData.data.result.createdAt];
+
+				this.setState({
+					placeData: map
+				});
+			});
 		}
 
 		this.setState({
-			data: places
+			places
 		});
 	}
 
@@ -47,24 +70,28 @@ export default class App extends React.Component {
 			);
 		}
 
-		if (!this.state.data) {
+		if (!this.state.places) {
 			return <h1>Hello world!</h1>;
 		}
 
-		console.log(this.state);
-
 		const listItems = [];
 
-		for (const key in this.state.data) {
-			if (!Object.prototype.hasOwnProperty.call(this.state.data, key)) {
+		for (const key in this.state.places) {
+			if (!Object.prototype.hasOwnProperty.call(this.state.places, key)) {
 				continue;
 			}
 
-			const place = this.state.data[key];
+			const place = this.state.places[key];
 
-			console.log('place id', key, place);
+			let temperature = 'no data';
+			let observed = null;
 
-			listItems.push(<PlaceData ref={`container-${key}`} key={`${key}-data`} name={place} id={key}/>);
+			if (this.state.placeData[key]) {
+				temperature = this.state.placeData[key][0].toString();
+				observed = this.state.placeData[key][1];
+			}
+
+			listItems.push(<PlaceData ref={`container-${key}`} key={`${key}-data`} name={place} id={key} temperature={temperature} lastObserved={observed}/>);
 		}
 
 		return (
