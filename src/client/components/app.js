@@ -1,6 +1,7 @@
 import React from 'react';
 import {get} from 'axios/index';
 import PlaceData from './placedata';
+import Input from './input';
 
 export default class App extends React.Component {
 	constructor() {
@@ -95,6 +96,7 @@ export default class App extends React.Component {
 		return (
 			<div>
 				<h1>Weather Application</h1>
+				<Input names={this.state.places}/>
 				<div>{listItems}</div>
 			</div>
 		);

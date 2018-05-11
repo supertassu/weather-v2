@@ -13,11 +13,12 @@
   "author": "tassu <hello@tassu.me>",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.46",
+    "@babel/node": "^7.0.0-beta.46",
     "@babel/preset-env": "^7.0.0-beta.46",
     "@babel/preset-react": "^7.0.0-beta.46",
     "ava": "^1.0.0-beta.3",
     "axios": "^0.18.0",
+    "babel-loader": "^8.0.0-beta",
     "chart.js": "^2.7.2",
     "css-loader": "^0.28.11",
     "dayjs": "^1.5.24",
@@ -53,10 +54,10 @@
   "ava": {
     "files": [
       "test/**/*.js"
-  	],
-	"require": [
-	  "@babel/register"
-	]
+    ],
+    "require": [
+      "@babel/register"
+    ]
   },
   "xo": {
     "extends": "xo-react",

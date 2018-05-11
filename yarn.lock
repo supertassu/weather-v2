@@ -32,21 +32,6 @@
     imurmurhash "^0.1.4"
     slide "^1.1.5"
 
-"@babel/cli@^6.26.0":
-  version "7.0.0-beta.46"
-  resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.0.0-beta.46.tgz#4fcede56d20659bf063b2c30c444267aa23f1bd3"
-  dependencies:
-    commander "^2.8.1"
-    convert-source-map "^1.1.0"
-    fs-readdir-recursive "^1.0.0"
-    glob "^7.0.0"
-    lodash "^4.2.0"
-    output-file-sync "^2.0.0"
-    slash "^1.0.0"
-    source-map "^0.5.0"
-  optionalDependencies:
-    chokidar "^1.6.1"
-
 "@babel/code-frame@7.0.0-beta.44":
   version "7.0.0-beta.44"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.0.0-beta.44.tgz#2a02643368de80916162be70865c97774f3adbd9"
@@ -79,7 +64,7 @@
     semver "^5.4.1"
     source-map "^0.5.0"
 
-"@babel/core@^6.26.3":
+"@babel/core@^7.0.0-beta.46":
   version "7.0.0-beta.46"
   resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.0.0-beta.46.tgz#dbe2189bcdef9a2c84becb1ec624878d31a95689"
   dependencies:
@@ -390,6 +375,18 @@
     chalk "^2.0.0"
     esutils "^2.0.2"
     js-tokens "^3.0.0"
+
+"@babel/node@^7.0.0-beta.46":
+  version "7.0.0-beta.46"
+  resolved "https://registry.yarnpkg.com/@babel/node/-/node-7.0.0-beta.46.tgz#88ec3ca630b93829fa9422af4bd8ba964c2ddd76"
+  dependencies:
+    "@babel/polyfill" "7.0.0-beta.46"
+    "@babel/register" "7.0.0-beta.46"
+    commander "^2.8.1"
+    fs-readdir-recursive "^1.0.0"
+    lodash "^4.2.0"
+    output-file-sync "^2.0.0"
+    v8flags "^3.0.0"
 
 "@babel/plugin-proposal-async-generator-functions@7.0.0-beta.44":
   version "7.0.0-beta.44"
@@ -719,14 +716,14 @@
     "@babel/helper-regex" "7.0.0-beta.46"
     regexpu-core "^4.1.3"
 
-"@babel/polyfill@^6.26.0":
+"@babel/polyfill@7.0.0-beta.46", "@babel/polyfill@^7.0.0-beta.46":
   version "7.0.0-beta.46"
   resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.0.0-beta.46.tgz#5a4203a3abee8ddfb80afd3cf6f5ff1391750695"
   dependencies:
     core-js "^2.5.3"
     regenerator-runtime "^0.11.1"
 
-"@babel/preset-env@^1.6.1":
+"@babel/preset-env@^7.0.0-beta.46":
   version "7.0.0-beta.46"
   resolved "https://registry.yarnpkg.com/@babel/preset-env/-/preset-env-7.0.0-beta.46.tgz#ae1b731ef71c2bb50c47e0cda4b6359ea2c61f09"
   dependencies:
@@ -770,7 +767,7 @@
     invariant "^2.2.2"
     semver "^5.3.0"
 
-"@babel/preset-react@^6.24.1":
+"@babel/preset-react@^7.0.0-beta.46":
   version "7.0.0-beta.46"
   resolved "https://registry.yarnpkg.com/@babel/preset-react/-/preset-react-7.0.0-beta.46.tgz#f2c7f05ce0c9f1bf25516f1acaf00ca0dfc1bfa5"
   dependencies:
@@ -781,7 +778,7 @@
     "@babel/plugin-transform-react-jsx-self" "7.0.0-beta.46"
     "@babel/plugin-transform-react-jsx-source" "7.0.0-beta.46"
 
-"@babel/register@^7.0.0-beta.46":
+"@babel/register@7.0.0-beta.46", "@babel/register@^7.0.0-beta.46":
   version "7.0.0-beta.46"
   resolved "https://registry.yarnpkg.com/@babel/register/-/register-7.0.0-beta.46.tgz#695629b28902b832be02b418c96e17e6b099e9d5"
   dependencies:
@@ -1525,6 +1522,14 @@ babel-helpers@^6.24.1:
   dependencies:
     babel-runtime "^6.22.0"
     babel-template "^6.24.1"
+
+babel-loader@^8.0.0-beta:
+  version "8.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-8.0.0-beta.2.tgz#4d5b67c964dc8c9cba866fd13d6b90df3acf8723"
+  dependencies:
+    find-cache-dir "^1.0.0"
+    loader-utils "^1.0.2"
+    mkdirp "^0.5.1"
 
 babel-messages@^6.23.0:
   version "6.23.0"
@@ -2346,21 +2351,6 @@ chartjs-color@^2.1.0:
     chartjs-color-string "^0.5.0"
     color-convert "^0.5.3"
 
-chokidar@^1.6.1, chokidar@~1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-1.7.0.tgz#798e689778151c8076b4b360e5edd28cda2bb468"
-  dependencies:
-    anymatch "^1.3.0"
-    async-each "^1.0.0"
-    glob-parent "^2.0.0"
-    inherits "^2.0.1"
-    is-binary-path "^1.0.0"
-    is-glob "^2.0.0"
-    path-is-absolute "^1.0.0"
-    readdirp "^2.0.0"
-  optionalDependencies:
-    fsevents "^1.0.0"
-
 chokidar@^2.0.2, chokidar@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.0.3.tgz#dcbd4f6cbb2a55b4799ba8a840ac527e5f4b1176"
@@ -2378,6 +2368,21 @@ chokidar@^2.0.2, chokidar@^2.0.3:
     upath "^1.0.0"
   optionalDependencies:
     fsevents "^1.1.2"
+
+chokidar@~1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-1.7.0.tgz#798e689778151c8076b4b360e5edd28cda2bb468"
+  dependencies:
+    anymatch "^1.3.0"
+    async-each "^1.0.0"
+    glob-parent "^2.0.0"
+    inherits "^2.0.1"
+    is-binary-path "^1.0.0"
+    is-glob "^2.0.0"
+    path-is-absolute "^1.0.0"
+    readdirp "^2.0.0"
+  optionalDependencies:
+    fsevents "^1.0.0"
 
 chownr@^1.0.1:
   version "1.0.1"
@@ -8025,6 +8030,12 @@ uuid@^3.2.1:
 v8-compile-cache@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/v8-compile-cache/-/v8-compile-cache-1.1.2.tgz#8d32e4f16974654657e676e0e467a348e89b0dc4"
+
+v8flags@^3.0.0:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/v8flags/-/v8flags-3.0.2.tgz#ad6a78a20a6b23d03a8debc11211e3cc23149477"
+  dependencies:
+    homedir-polyfill "^1.0.1"
 
 validate-npm-package-license@^3.0.1:
   version "3.0.3"
