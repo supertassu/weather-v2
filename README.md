@@ -1,5 +1,7 @@
 # Tassu's Boilerplate
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/supertassu/weather-v2.svg)](https://greenkeeper.io/)
+
 A boilerplate for Koa and React, utilizing AVA and XO for testing and code style.
 This is a grab-and-go style starter kit for any web development project for me.
 
